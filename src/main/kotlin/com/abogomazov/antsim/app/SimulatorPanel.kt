@@ -44,9 +44,9 @@ class SimulatorPanel(
 
     // TODO use origin bound context
     private fun Graphics2D.drawGrid(grid: Grid, origin: Point) {
-        for ((_, points) in grid.renderPolygons(hexSize, origin)) {
-            val xs = points.map { it.x.toInt() }.toIntArray()
-            val ys = points.map { it.y.toInt() }.toIntArray()
+        for (shape in grid.renderPolygons(hexSize, origin)) {
+            val xs = shape.points.map { it.x.toInt() }.toIntArray()
+            val ys = shape.points.map { it.y.toInt() }.toIntArray()
 
             color = Color(230, 230, 230)
             fillPolygon(xs, ys, 6)

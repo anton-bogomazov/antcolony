@@ -5,35 +5,39 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-fun Hex.toPixel(
+private const val HEX_SIDES = 6
+private const val POINTY_TOP_ROTATION_RAD = -Math.PI / HEX_SIDES
+
+private val VERTICAL_SPACING_FACTOR = 3.0 / 2.0
+private val HORIZONTAL_SPACING_FACTOR = sqrt(3.0)
+private val HORIZONTAL_OFFSET_FACTOR = HORIZONTAL_SPACING_FACTOR / 2.0
+
+fun Hex.center(
     hexSize: Double,
-    origin: Point = Point(0.0, 0.0)
+    origin: Point
 ): Point {
-    val px = hexSize * (sqrt(3.0) * x + sqrt(3.0) / 2 * z)
-    val py = hexSize * (3.0 / 2 * z)
-    return Point(px + origin.x, py + origin.y)
+    val horizontalSpacing = hexSize * HORIZONTAL_SPACING_FACTOR
+    val horizontalOffset = hexSize * HORIZONTAL_OFFSET_FACTOR
+    val verticalSpacing = hexSize * VERTICAL_SPACING_FACTOR
+
+    val px = horizontalSpacing * x + horizontalOffset * z + origin.x
+    val py = verticalSpacing * z + origin.y
+
+    return Point(px, py)
 }
 
 fun Hex.polygon(
     hexSize: Double,
-    origin: Point = Point(0.0, 0.0)
-): List<Point> {
-    val center = toPixel(hexSize, origin)
+    origin: Point
+): RenderShape {
+    val center = center(hexSize, origin)
 
-    return (0 until 6).map { i ->
-        val angle = Math.PI / 180 * (60 * i - 30)
+    val vertices = (0 until HEX_SIDES).map { i ->
+        val angleRad = i * 2 * Math.PI / HEX_SIDES + POINTY_TOP_ROTATION_RAD
         Point(
-            center.x + hexSize * cos(angle),
-            center.y + hexSize * sin(angle)
+            x = center.x + hexSize * cos(angleRad),
+            y = center.y + hexSize * sin(angleRad)
         )
     }
-}
-
-fun Hex.centerPixel(
-    hexSize: Double,
-    origin: Point
-): Point {
-    val px = hexSize * (sqrt(3.0) * x + sqrt(3.0) / 2 * z)
-    val py = hexSize * (3.0 / 2 * z)
-    return Point(px + origin.x, py + origin.y)
+    return RenderShape(vertices)
 }

@@ -1,9 +1,15 @@
 package com.abogomazov.antsim.domain
 
-data class Walker(
-    var hex: Hex,
-    var direction: Direction,
+class Walker(
+    initHex: Hex,
+    initDir: Direction,
 ) {
+    var hex: Hex = initHex
+        private set
+
+    var direction: Direction = initDir
+        private set
+
     fun step(grid: Grid) {
         val nextHex = hex + direction.delta
         if (grid.contains(nextHex)) {
