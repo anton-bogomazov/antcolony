@@ -2,12 +2,12 @@ package com.abogomazov.antsim.render
 
 import com.abogomazov.antsim.domain.Anthill
 import com.abogomazov.antsim.domain.Food
-import com.abogomazov.antsim.domain.Object
+import com.abogomazov.antsim.domain.WorldObject
 import com.abogomazov.antsim.domain.Obstacle
 import kotlin.math.cos
 import kotlin.math.sin
 
-fun Object.render(hexSize: Double, origin: Point): RenderShape {
+fun WorldObject.render(hexSize: Double, origin: Point): RenderShape {
     val center = hex.center(hexSize, origin)
 
     return when (this) {

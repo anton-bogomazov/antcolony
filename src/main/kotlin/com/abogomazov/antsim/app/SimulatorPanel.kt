@@ -15,18 +15,15 @@ import javax.swing.JPanel
 import javax.swing.Timer
 
 class SimulatorPanel(
+    private val hexSize: Double,
     private val simulation: Simulation,
 ) : JPanel() {
     init {
-        val timer = Timer(simulation.tickFrame.inWholeMilliseconds.toInt()) {
+        val timer = Timer(simulation.tickRate.inWholeMilliseconds.toInt()) {
             simulation.tick()
             repaint()
         }
         timer.start()
-    }
-
-    companion object {
-        private val hexSize = 30.0
     }
 
     override fun paintComponent(g: Graphics) {

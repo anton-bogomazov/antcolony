@@ -5,7 +5,7 @@ import kotlin.time.Duration
 data class Simulation(
     val grid: Grid,
     val walkers: List<Walker>,
-    val tickFrame: Duration,
+    val tickRate: Duration,
 ) {
     fun tick() {
         for (walker in walkers) {

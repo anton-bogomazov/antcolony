@@ -16,11 +16,11 @@ class Grid(
     }
 
 
-    private val objects = mutableMapOf<Hex, Object>()
+    private val objects = mutableMapOf<Hex, WorldObject>()
 
-    fun getObjects(): Set<Object> = objects.values.toSet()
+    fun getObjects(): Set<WorldObject> = objects.values.toSet()
 
-    fun add(obj: Object) {
+    fun add(obj: WorldObject) {
         require(obj.hex in cells)
         objects.computeIfAbsent(obj.hex) { obj }
     }
@@ -29,7 +29,7 @@ class Grid(
         objects.remove(hex)
     }
 
-    fun getObject(hex: Hex): Object? {
+    fun getObject(hex: Hex): WorldObject? {
         return objects[hex]
     }
 

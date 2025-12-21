@@ -4,11 +4,12 @@ import java.awt.Component
 import javax.swing.JFrame
 import javax.swing.SwingUtilities
 
-fun runFrame(component: Component) {
+fun runFrame(size: Pair<Int, Int>, component: Component) {
+    val (w, h) = size
     SwingUtilities.invokeLater {
         val frame = JFrame("Hex Grid")
         frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-        frame.setSize(800, 800)
+        frame.setSize(w, h)
 
         frame.add(component)
 

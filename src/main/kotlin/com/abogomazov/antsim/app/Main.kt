@@ -1,20 +1,32 @@
 package com.abogomazov.antsim.app
 
 import com.abogomazov.antsim.domain.*
+import com.abogomazov.antsim.parser.AxialCoordinate
+import com.abogomazov.antsim.parser.SimulationParameters
+import com.abogomazov.antsim.parser.WorldObjectDefinition
+import com.abogomazov.antsim.parser.WorldObjectType
+import com.abogomazov.antsim.parser.toDomain
+import kotlin.math.min
+import kotlin.math.sqrt
 import kotlin.time.Duration.Companion.milliseconds
 
 fun main() {
-    val grid = Grid(radius = 4u)
-    val objects = listOf(
-        Anthill(Hex(-1, 0, 1)),
-        Anthill(Hex(0, 2, -2)),
-        Food(Hex(-2, 4, -2), 15),
-        Food(Hex(-4, 4, 0), 15),
-        Obstacle(Hex(1, -2, 1)),
-        Obstacle(Hex(2, -3, 1)),
-        Obstacle(Hex(2, -4, 2)),
+    val params = SimulationParameters(
+        worldSize = 16u,
+        tickRate = 300.milliseconds,
+        objects = listOf(
+            WorldObjectDefinition(AxialCoordinate(q = -1, r = 1), type = WorldObjectType.ANTHILL),
+            WorldObjectDefinition(AxialCoordinate(q = 0, r = -2), type = WorldObjectType.ANTHILL),
+            WorldObjectDefinition(AxialCoordinate(q = -2, r = -2), amount = 15u, type = WorldObjectType.FOOD),
+            WorldObjectDefinition(AxialCoordinate(q = -4, r = 0), amount = 15u, type = WorldObjectType.FOOD),
+            WorldObjectDefinition(AxialCoordinate(q = 1, r = 1), type = WorldObjectType.OBSTACLE),
+            WorldObjectDefinition(AxialCoordinate(q = 2, r = 1), type = WorldObjectType.OBSTACLE),
+            WorldObjectDefinition(AxialCoordinate(q = 2, r = 2), type = WorldObjectType.OBSTACLE),
+        )
     )
-    objects.forEach { grid.add(it) }
+
+    val grid = Grid(radius = params.worldSize)
+    params.objects.forEach { grid.add(it.toDomain()) }
 
     val simulation = Simulation(
         grid,
@@ -22,9 +34,19 @@ fun main() {
             DummyWalker(Hex(0, 0, 0), Direction.NE),
             DummyWalker(Hex(-2, 2, 0), Direction.W)
         ),
-        tickFrame = 500.milliseconds,
+        tickRate = params.tickRate,
     )
 
-    runFrame(SimulatorPanel(simulation))
+    runFrame(
+        size = 1000 to 1000,
+        SimulatorPanel(
+            computeHexSize(params.worldSize, 1000, 1000), simulation)
+    )
+}
+
+fun computeHexSize(radius: UInt, windowWidth: Int, windowHeight: Int): Double {
+    val hexSizeX = windowWidth / (sqrt(3.0) * (2 * radius.toInt() + 1))
+    val hexSizeY = windowHeight / (1.5 * (2 * radius.toInt() + 1))
+    return min(hexSizeX, hexSizeY)
 }
 
