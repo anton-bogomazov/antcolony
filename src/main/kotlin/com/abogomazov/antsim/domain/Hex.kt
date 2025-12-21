@@ -1,5 +1,7 @@
 package com.abogomazov.antsim.domain
 
+import kotlin.math.absoluteValue
+
 data class Hex(
     val x: Int,
     val y: Int,
@@ -11,4 +13,10 @@ data class Hex(
 
     operator fun plus(other: Hex): Hex =
         Hex(x + other.x, y + other.y, z + other.z)
+
+    fun distance(other: Hex): Int {
+        return ((x - other.x).absoluteValue +
+                (y - other.y).absoluteValue +
+                (z - other.z).absoluteValue) / 2
+    }
 }

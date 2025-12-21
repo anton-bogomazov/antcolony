@@ -1,6 +1,7 @@
 package com.abogomazov.antsim.app
 
 import com.abogomazov.antsim.domain.Simulation
+import com.abogomazov.antsim.domain.WalkerAnt
 import com.abogomazov.antsim.render.*
 import java.awt.Graphics
 import java.awt.Graphics2D
@@ -29,8 +30,8 @@ class SimulatorPanel(
                 hexSize = hexSize,
             )
         ) {
-            drawShapes(*simulation.world.grid.render().toTypedArray())
-            drawShapes(*simulation.world.walkers.map { it.render() }.toTypedArray())
+            drawShapes(*simulation.world.render().toTypedArray())
+            drawShapes(*simulation.world.walkers.map { (it as WalkerAnt).render() }.toTypedArray())
             drawShapes(*simulation.world.objects.map { it.render() }.toTypedArray())
         }
     }

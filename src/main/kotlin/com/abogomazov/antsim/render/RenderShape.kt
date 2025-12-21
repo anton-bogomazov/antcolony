@@ -22,17 +22,23 @@ data class RenderShape(
     }
 }
 
-enum class Color {
-    BLACK,
-    WHITE,
-    RED,
-    BROWN,
+sealed class Color(val saturation: Double) {
+    object BLACK : Color(1.0)
+    object WHITE : Color(1.0)
+    object RED : Color(1.0)
+    object BROWN : Color(1.0)
+    class GREEN(saturation: Double) : Color(saturation)
 }
 
 fun Color.toAwtColor() =
     when (this) {
-        Color.BLACK -> java.awt.Color.BLACK
-        Color.WHITE -> java.awt.Color.WHITE
-        Color.RED   -> java.awt.Color.RED
-        Color.BROWN -> java.awt.Color(139, 69, 19)
+        is Color.BLACK -> java.awt.Color.BLACK
+        is Color.WHITE -> java.awt.Color.WHITE
+        is Color.RED   -> java.awt.Color.RED
+        is Color.BROWN -> java.awt.Color(139, 69, 19)
+        is Color.GREEN -> java.awt.Color.getHSBColor(
+            120f / 360f,   // Hue зеленого
+            saturation.toFloat().coerceIn(0f, 1f), // Saturation
+            1.0f           // Brightness
+        )
     }

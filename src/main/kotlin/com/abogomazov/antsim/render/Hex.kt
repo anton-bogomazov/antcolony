@@ -28,7 +28,7 @@ fun Hex.center(
 }
 
 context(context: RenderingContext)
-fun Hex.polygon(): RenderShape {
+fun Hex.polygon(color: Color): RenderShape {
     val center = center(context.hexSize, context.origin)
 
     val vertices = (0 until HEX_SIDES).map { i ->
@@ -38,5 +38,5 @@ fun Hex.polygon(): RenderShape {
             y = center.y + context.hexSize * sin(angleRad)
         )
     }
-    return RenderShape(vertices)
+    return RenderShape(vertices, color)
 }

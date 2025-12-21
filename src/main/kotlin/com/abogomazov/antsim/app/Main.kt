@@ -15,8 +15,10 @@ fun main() {
     val world = World(
         grid = grid,
         setOf(
-            DummyWalker(Hex(0, 0, 0), Direction.NE),
-            DummyWalker(Hex(-2, 2, 0), Direction.W)
+            WalkerAnt(Hex(0, 0, 0), Direction.NE),
+            WalkerAnt(Hex(-2, 2, 0), Direction.W),
+            WalkerAnt(Hex(5, 2, -7), Direction.W),
+            WalkerAnt(Hex(-10, 2, 8), Direction.W),
         ),
         objects = params.objects.map { it.toDomain() }.toSet()
     )

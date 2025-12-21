@@ -15,6 +15,10 @@ class Grid(
         }
     }
 
+    fun neighbors(hex: Hex): List<Hex> {
+        return Direction.entries.map { hex + it.delta }.filter { it in cells }
+    }
+
     operator fun contains(hex: Hex): Boolean =
         hex in cells
 }
