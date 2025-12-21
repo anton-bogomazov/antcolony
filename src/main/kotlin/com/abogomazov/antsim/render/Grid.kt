@@ -8,4 +8,6 @@ fun Grid.renderPolygons(
 ): List<RenderShape> =
     cells.map { hex ->
         hex.polygon(hexSize, origin)
+    } + getObjects().map {
+        it.render(hexSize, origin)
     }

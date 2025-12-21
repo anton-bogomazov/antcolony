@@ -1,18 +1,26 @@
 package com.abogomazov.antsim.domain
 
-class Walker(
+sealed interface Walker {
+    val hex: Hex
+    val direction: Direction
+
+    fun step(grid: Grid)
+}
+
+class DummyWalker(
     initHex: Hex,
     initDir: Direction,
-) {
-    var hex: Hex = initHex
+) : Walker {
+    override var hex: Hex = initHex
         private set
 
-    var direction: Direction = initDir
+    override var direction: Direction = initDir
         private set
 
-    fun step(grid: Grid) {
+    override fun step(grid: Grid) {
         val nextHex = hex + direction.delta
-        if (grid.contains(nextHex)) {
+        val nextHexObject = grid.getObject(nextHex)
+        if (grid.contains(nextHex) && nextHexObject !is Obstacle) {
             hex = nextHex
         } else {
             direction = direction.cw()
