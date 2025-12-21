@@ -14,12 +14,6 @@ fun main() {
     // FIXME validate if it has a few objects on the same hex
     val world = World(
         grid = grid,
-        setOf(
-            WalkerAnt(Hex(0, 0, 0), Direction.NE),
-            WalkerAnt(Hex(-2, 2, 0), Direction.W),
-            WalkerAnt(Hex(5, 2, -7), Direction.W),
-            WalkerAnt(Hex(-10, 2, 8), Direction.W),
-        ),
         objects = params.objects.map { it.toDomain() }.toSet()
     )
     val simulation = Simulation(

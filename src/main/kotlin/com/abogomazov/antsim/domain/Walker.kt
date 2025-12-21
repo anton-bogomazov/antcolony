@@ -25,9 +25,17 @@ class WalkerAnt(
     var carryingFood: Boolean = false
         private set
 
+    private fun moveToHex(target: Hex) {
+        val delta = target - hex
+
+        direction = Direction.entries.firstOrNull { it.delta == delta } ?: direction
+        hex = target
+    }
+
     override fun step(world: World) {
         val neighbors = world.grid.neighbors(hex)
             .filter { world.getObject(it) !is Obstacle }
+            .filter { it !in world.walkers.map { it.hex } }
 
         if (neighbors.isEmpty()) return
 
@@ -42,16 +50,16 @@ class WalkerAnt(
             if (anthills.isNotEmpty()) {
                 val target = anthills.minByOrNull { hex.distance(it.hex) }!!.hex
                 val nextHex = neighbors.minByOrNull { it.distance(target) }!!
-                hex = nextHex
+                moveToHex(nextHex)
                 world.depositPheromone(hex, amount = 1.0) // оставляем феромон
             } else {
-                hex = neighbors.random()
+                moveToHex(neighbors.random())
             }
         } else {
             // ищем еду рядом
             val foodNeighbor = neighbors.firstOrNull { world.getObject(it) is Food }
             if (foodNeighbor != null) {
-                hex = foodNeighbor
+                moveToHex(foodNeighbor)
                 val food = world.getObject(hex) as Food
                 carryingFood = true
                 food.amount -= 1u
@@ -60,14 +68,15 @@ class WalkerAnt(
                 }
                 world.depositPheromone(hex, amount = 0.8)
             } else {
-                val totalPheromone = neighbors.sumOf { (world.pheromones[it] ?: 0.0) + 0.1 }
+                val totalPheromone = neighbors.sumOf { (world.pheromones[it] ?: 0.0) + 0.2 } // 0.2 - exploration chance
                 val r = Random.nextDouble() * totalPheromone
                 var acc = 0.0
                 val nextHex = neighbors.firstOrNull {
                     acc += (world.pheromones[it] ?: 0.0) + 0.1
                     acc >= r
                 } ?: neighbors.random()
-                hex = nextHex
+
+                moveToHex(nextHex)
             }
         }
     }

@@ -14,6 +14,9 @@ data class Hex(
     operator fun plus(other: Hex): Hex =
         Hex(x + other.x, y + other.y, z + other.z)
 
+    operator fun minus(other: Hex): Hex =
+        Hex(x - other.x, y - other.y, z - other.z)
+
     fun distance(other: Hex): Int {
         return ((x - other.x).absoluteValue +
                 (y - other.y).absoluteValue +

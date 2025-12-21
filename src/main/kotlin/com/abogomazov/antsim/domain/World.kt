@@ -4,7 +4,7 @@ package com.abogomazov.antsim.domain
 class World(
     val grid: Grid,
     // Walker is WorldObject
-    val walkers: Set<Walker>,
+    val walkers: MutableSet<Walker> = mutableSetOf(),
     objects: Set<WorldObject>,
 ) {
     private val objectMap = objects.associateBy { it.hex }.toMutableMap()
@@ -27,7 +27,7 @@ class World(
 
     val pheromones: MutableMap<Hex, Double> = mutableMapOf()
 
-    fun evaporatePheromones(evaporationRate: Double = 0.05) {
+    fun evaporatePheromones(evaporationRate: Double) {
         pheromones.keys.toList().forEach { hex ->
             pheromones[hex] = (pheromones[hex] ?: 0.0) * (1.0 - evaporationRate)
             if ((pheromones[hex] ?: 0.0) < 0.001) pheromones.remove(hex)
