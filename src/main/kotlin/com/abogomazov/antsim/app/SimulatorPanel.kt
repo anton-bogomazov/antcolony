@@ -1,6 +1,7 @@
-package com.abogomazov.antsim
+package com.abogomazov.antsim.app
 
 import com.abogomazov.antsim.domain.Grid
+import com.abogomazov.antsim.domain.Simulation
 import com.abogomazov.antsim.domain.Walker
 import com.abogomazov.antsim.render.Point
 import com.abogomazov.antsim.render.render

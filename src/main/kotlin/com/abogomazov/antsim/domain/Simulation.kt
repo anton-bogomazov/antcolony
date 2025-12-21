@@ -1,7 +1,5 @@
-package com.abogomazov.antsim
+package com.abogomazov.antsim.domain
 
-import com.abogomazov.antsim.domain.Grid
-import com.abogomazov.antsim.domain.Walker
 import kotlin.time.Duration
 
 data class Simulation(

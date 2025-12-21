@@ -1,12 +1,10 @@
-package com.abogomazov.antsim
+package com.abogomazov.antsim.app
 
 import com.abogomazov.antsim.domain.Direction
 import com.abogomazov.antsim.domain.Grid
 import com.abogomazov.antsim.domain.Hex
+import com.abogomazov.antsim.domain.Simulation
 import com.abogomazov.antsim.domain.Walker
-import java.awt.Component
-import javax.swing.JFrame
-import javax.swing.SwingUtilities
 import kotlin.time.Duration.Companion.milliseconds
 
 fun main() {
@@ -22,14 +20,3 @@ fun main() {
     runFrame(SimulatorPanel(simulation))
 }
 
-fun runFrame(component: Component) {
-    SwingUtilities.invokeLater {
-        val frame = JFrame("Hex Grid")
-        frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-        frame.setSize(800, 800)
-
-        frame.add(component)
-
-        frame.isVisible = true
-    }
-}
