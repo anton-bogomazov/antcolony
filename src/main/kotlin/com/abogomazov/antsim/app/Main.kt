@@ -3,7 +3,6 @@ package com.abogomazov.antsim.app
 import com.abogomazov.antsim.domain.*
 import kotlin.math.min
 import kotlin.math.sqrt
-import kotlin.time.Duration.Companion.milliseconds
 
 fun main() {
     // pass as parameter
