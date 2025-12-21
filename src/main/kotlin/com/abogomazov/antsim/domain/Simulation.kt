@@ -2,14 +2,37 @@ package com.abogomazov.antsim.domain
 
 import kotlin.time.Duration
 
-data class Simulation(
+class World(
     val grid: Grid,
-    val walkers: List<Walker>,
+    val walkers: Set<Walker>,
+    objects: Set<WorldObject>,
+) {
+    private val objectMap = objects.associateBy { it.hex }.toMutableMap()
+
+    val objects: Set<WorldObject>
+        get() = objectMap.values.toSet()
+
+    fun add(obj: WorldObject) {
+        require(obj.hex in grid.cells)
+        objectMap.computeIfAbsent(obj.hex) { obj }
+    }
+
+    fun clear(hex: Hex) {
+        objectMap.remove(hex)
+    }
+
+    fun getObject(hex: Hex): WorldObject? {
+        return objectMap[hex]
+    }
+}
+
+data class Simulation(
+    val world : World,
     val tickRate: Duration,
 ) {
     fun tick() {
-        for (walker in walkers) {
-            walker.step(grid)
+        for (walker in world.walkers) {
+            walker.step(world)
         }
     }
 }

@@ -13,14 +13,16 @@ fun main() {
 
     val grid = Grid(radius = params.worldSize)
     // FIXME validate if it has a few objects on the same hex
-    params.objects.forEach { grid.add(it.toDomain()) }
-
-    val simulation = Simulation(
-        grid,
-        listOf(
+    val world = World(
+        grid = grid,
+        setOf(
             DummyWalker(Hex(0, 0, 0), Direction.NE),
             DummyWalker(Hex(-2, 2, 0), Direction.W)
         ),
+        objects = params.objects.map { it.toDomain() }.toSet()
+    )
+    val simulation = Simulation(
+        world = world,
         tickRate = params.tickRate,
     )
 

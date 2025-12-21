@@ -2,12 +2,10 @@ package com.abogomazov.antsim.render
 
 import com.abogomazov.antsim.domain.Grid
 
-fun Grid.renderPolygons(
+fun Grid.render(
     hexSize: Double,
     origin: Point,
 ): List<RenderShape> =
     cells.map { hex ->
         hex.polygon(hexSize, origin)
-    } + getObjects().map {
-        it.render(hexSize, origin)
     }

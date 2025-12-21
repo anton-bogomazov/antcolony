@@ -15,24 +15,6 @@ class Grid(
         }
     }
 
-
-    private val objects = mutableMapOf<Hex, WorldObject>()
-
-    fun getObjects(): Set<WorldObject> = objects.values.toSet()
-
-    fun add(obj: WorldObject) {
-        require(obj.hex in cells)
-        objects.computeIfAbsent(obj.hex) { obj }
-    }
-
-    fun clear(hex: Hex) {
-        objects.remove(hex)
-    }
-
-    fun getObject(hex: Hex): WorldObject? {
-        return objects[hex]
-    }
-
     operator fun contains(hex: Hex): Boolean =
         hex in cells
 }

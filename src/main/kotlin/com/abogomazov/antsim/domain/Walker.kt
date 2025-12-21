@@ -4,7 +4,7 @@ sealed interface Walker {
     val hex: Hex
     val direction: Direction
 
-    fun step(grid: Grid)
+    fun step(world: World)
 }
 
 class DummyWalker(
@@ -17,14 +17,14 @@ class DummyWalker(
     override var direction: Direction = initDir
         private set
 
-    override fun step(grid: Grid) {
+    override fun step(world: World) {
         val nextHex = hex + direction.delta
-        val nextHexObject = grid.getObject(nextHex)
-        if (grid.contains(nextHex) && nextHexObject !is Obstacle) {
+        val nextHexObject = world.getObject(nextHex)
+        if (world.grid.contains(nextHex) && nextHexObject !is Obstacle) {
             hex = nextHex
         } else {
             direction = direction.cw()
-            step(grid)
+            step(world)
         }
     }
 }
