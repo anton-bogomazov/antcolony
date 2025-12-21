@@ -4,16 +4,8 @@ import com.abogomazov.antsim.domain.Direction
 import com.abogomazov.antsim.domain.Grid
 import com.abogomazov.antsim.domain.Hex
 import com.abogomazov.antsim.domain.Walker
-import com.abogomazov.antsim.render.Point
-import com.abogomazov.antsim.render.render
-import com.abogomazov.antsim.render.renderPolygons
-import java.awt.Color
 import java.awt.Component
-import java.awt.Graphics
-import java.awt.Graphics2D
-import java.awt.RenderingHints
 import javax.swing.JFrame
-import javax.swing.JPanel
 import javax.swing.SwingUtilities
 import kotlin.time.Duration.Companion.milliseconds
 
