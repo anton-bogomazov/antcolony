@@ -1,4 +1,4 @@
-package com.abogomazov.antsim.parser
+package com.abogomazov.antsim.app
 
 import com.abogomazov.antsim.domain.Anthill
 import com.abogomazov.antsim.domain.Food
@@ -10,7 +10,6 @@ import kotlin.time.Duration
 data class SimulationParameters(
     val worldSize: UInt,
     val tickRate: Duration,
-//    val spawnRate: Double,
     val objects: List<WorldObjectDefinition>
 )
 

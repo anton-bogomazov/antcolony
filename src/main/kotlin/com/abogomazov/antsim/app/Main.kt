@@ -1,31 +1,18 @@
 package com.abogomazov.antsim.app
 
 import com.abogomazov.antsim.domain.*
-import com.abogomazov.antsim.parser.AxialCoordinate
-import com.abogomazov.antsim.parser.SimulationParameters
-import com.abogomazov.antsim.parser.WorldObjectDefinition
-import com.abogomazov.antsim.parser.WorldObjectType
-import com.abogomazov.antsim.parser.toDomain
 import kotlin.math.min
 import kotlin.math.sqrt
 import kotlin.time.Duration.Companion.milliseconds
 
 fun main() {
-    val params = SimulationParameters(
-        worldSize = 16u,
-        tickRate = 300.milliseconds,
-        objects = listOf(
-            WorldObjectDefinition(AxialCoordinate(q = -1, r = 1), type = WorldObjectType.ANTHILL),
-            WorldObjectDefinition(AxialCoordinate(q = 0, r = -2), type = WorldObjectType.ANTHILL),
-            WorldObjectDefinition(AxialCoordinate(q = -2, r = -2), amount = 15u, type = WorldObjectType.FOOD),
-            WorldObjectDefinition(AxialCoordinate(q = -4, r = 0), amount = 15u, type = WorldObjectType.FOOD),
-            WorldObjectDefinition(AxialCoordinate(q = 1, r = 1), type = WorldObjectType.OBSTACLE),
-            WorldObjectDefinition(AxialCoordinate(q = 2, r = 1), type = WorldObjectType.OBSTACLE),
-            WorldObjectDefinition(AxialCoordinate(q = 2, r = 2), type = WorldObjectType.OBSTACLE),
-        )
-    )
+    // pass as parameter
+    val inputStream = object {}.javaClass.getResourceAsStream("/config.txt")
+        ?: error("config.txt not found in resources")
+    val params = parseSimulationParameters(inputStream)
 
     val grid = Grid(radius = params.worldSize)
+    // FIXME validate if it has a few objects on the same hex
     params.objects.forEach { grid.add(it.toDomain()) }
 
     val simulation = Simulation(
