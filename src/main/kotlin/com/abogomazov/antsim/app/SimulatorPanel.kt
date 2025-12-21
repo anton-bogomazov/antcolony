@@ -22,31 +22,48 @@ class SimulatorPanel(
 
     override fun paintComponent(g: Graphics) {
         super.paintComponent(g)
-        val g2 = g as Graphics2D
+        with(
+            Builder(
+                g as Graphics2D,
+                Point(width / 2.0, height / 2.0),
+                hexSize = hexSize,
+            )
+        ) {
+            drawShapes(*simulation.world.grid.render().toTypedArray())
+            drawShapes(*simulation.world.walkers.map { it.render() }.toTypedArray())
+            drawShapes(*simulation.world.objects.map { it.render() }.toTypedArray())
+        }
+    }
+}
 
-        g2.setRenderingHint(
+interface RenderingContext {
+    val origin: Point
+    val hexSize: Double
+}
+
+class Builder(
+    private val canvas: Graphics2D,
+    override val origin: Point,
+    override val hexSize: Double,
+) : RenderingContext {
+    init {
+        canvas.setRenderingHint(
             RenderingHints.KEY_ANTIALIASING,
             RenderingHints.VALUE_ANTIALIAS_ON
         )
-        val origin = Point(width / 2.0, height / 2.0)
-
-        g2.drawShapes(origin, *simulation.world.grid.render(hexSize, origin).toTypedArray())
-        g2.drawShapes(origin, *simulation.world.walkers.map { it.render(hexSize, origin) }.toTypedArray())
-        g2.drawShapes(origin, *simulation.world.objects.map { it.render(hexSize, origin) }.toTypedArray())
     }
 
-    // TODO use origin bound context
-    private fun Graphics2D.drawShapes(origin: Point, vararg shapes: RenderShape) {
+    fun drawShapes(vararg shapes: RenderShape) {
         shapes.forEach { shape ->
             val xs = shape.points.map { it.x.toInt() }.toIntArray()
             val ys = shape.points.map { it.y.toInt() }.toIntArray()
 
-            color = shape.color.toAwtColor()
-            fillPolygon(xs, ys, xs.size)
+            canvas.color = shape.color.toAwtColor()
+            canvas.fillPolygon(xs, ys, xs.size)
 
             // outline
-            color = Color.BLACK.toAwtColor()
-            drawPolygon(xs, ys, shape.points.size)
+            canvas.color = Color.BLACK.toAwtColor()
+            canvas.drawPolygon(xs, ys, shape.points.size)
         }
     }
 }

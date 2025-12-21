@@ -1,5 +1,6 @@
 package com.abogomazov.antsim.render
 
+import com.abogomazov.antsim.app.RenderingContext
 import com.abogomazov.antsim.domain.Anthill
 import com.abogomazov.antsim.domain.Food
 import com.abogomazov.antsim.domain.WorldObject
@@ -7,13 +8,14 @@ import com.abogomazov.antsim.domain.Obstacle
 import kotlin.math.cos
 import kotlin.math.sin
 
-fun WorldObject.render(hexSize: Double, origin: Point): RenderShape {
-    val center = hex.center(hexSize, origin)
+context(context: RenderingContext)
+fun WorldObject.render(): RenderShape {
+    val center = hex.center(context.hexSize, context.origin)
 
     return when (this) {
-        is Anthill -> triangle(center, hexSize * 0.6, Color.BROWN)
-        is Food -> circle(center, hexSize * 0.4, Color.RED)
-        is Obstacle -> square(center, hexSize * 0.7, Color.BLACK)
+        is Anthill -> triangle(center, context.hexSize * 0.6, Color.BROWN)
+        is Food -> circle(center, context.hexSize * 0.4, Color.RED)
+        is Obstacle -> square(center, context.hexSize * 0.7, Color.BLACK)
     }
 }
 

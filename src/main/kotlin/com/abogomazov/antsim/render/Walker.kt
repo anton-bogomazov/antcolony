@@ -1,14 +1,13 @@
 package com.abogomazov.antsim.render
 
+import com.abogomazov.antsim.app.RenderingContext
 import com.abogomazov.antsim.domain.Walker
 
 const val WALKER_SIZE = 0.5
 
-fun Walker.render(
-    hexSize: Double,
-    origin: Point
-): RenderShape {
-    val size = hexSize * WALKER_SIZE
+context(context: RenderingContext)
+fun Walker.render(): RenderShape {
+    val size = context.hexSize * WALKER_SIZE
     val rightOrientedArrow = RenderShape(
         listOf(
             Point(x = size, y = 0.0),
@@ -17,7 +16,7 @@ fun Walker.render(
         )
     )
     return rightOrientedArrow.translate(
-        origin = hex.center(hexSize, origin),
+        origin = hex.center(context.hexSize, context.origin),
         angleRad = direction.radian(),
     )
 }

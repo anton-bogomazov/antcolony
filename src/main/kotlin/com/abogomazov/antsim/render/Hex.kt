@@ -1,5 +1,6 @@
 package com.abogomazov.antsim.render
 
+import com.abogomazov.antsim.app.RenderingContext
 import com.abogomazov.antsim.domain.Hex
 import kotlin.math.cos
 import kotlin.math.sin
@@ -26,17 +27,15 @@ fun Hex.center(
     return Point(px, py)
 }
 
-fun Hex.polygon(
-    hexSize: Double,
-    origin: Point
-): RenderShape {
-    val center = center(hexSize, origin)
+context(context: RenderingContext)
+fun Hex.polygon(): RenderShape {
+    val center = center(context.hexSize, context.origin)
 
     val vertices = (0 until HEX_SIDES).map { i ->
         val angleRad = i * 2 * Math.PI / HEX_SIDES + POINTY_TOP_ROTATION_RAD
         Point(
-            x = center.x + hexSize * cos(angleRad),
-            y = center.y + hexSize * sin(angleRad)
+            x = center.x + context.hexSize * cos(angleRad),
+            y = center.y + context.hexSize * sin(angleRad)
         )
     }
     return RenderShape(vertices)
