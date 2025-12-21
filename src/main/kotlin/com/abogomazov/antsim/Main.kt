@@ -1,6 +1,9 @@
 package com.abogomazov.antsim
 
+import com.abogomazov.antsim.domain.Direction
 import com.abogomazov.antsim.domain.Grid
+import com.abogomazov.antsim.domain.Hex
+import com.abogomazov.antsim.domain.Walker
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Graphics2D
@@ -17,7 +20,8 @@ fun main() {
 
         frame.add(
             HexPanel(
-                Grid(radius = 4u)
+                Grid(radius = 4u),
+                Walker(Hex(0, 0, 0), Direction.NE)
             )
         )
 
@@ -26,8 +30,17 @@ fun main() {
 }
 
 class HexPanel(
-    private val grid: Grid
+    private val grid: Grid,
+    private val walker: Walker,
 ) : JPanel() {
+
+    init {
+        val timer = javax.swing.Timer(300) {
+            walker.step(grid)
+            repaint()
+        }
+        timer.start()
+    }
 
     private val hexSize = 30.0
 
@@ -52,6 +65,11 @@ class HexPanel(
             g2.drawPolygon(xs, ys, 6)
         }
 
+        val shape = walker.render(hexSize, origin)
 
+        val xs = shape.points.map { it.x.toInt() }.toIntArray()
+        val ys = shape.points.map { it.y.toInt() }.toIntArray()
+
+        g2.fillPolygon(xs, ys, xs.size)
     }
 }

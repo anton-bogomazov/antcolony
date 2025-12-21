@@ -7,4 +7,10 @@ enum class Direction(val delta: Hex) {
     W(Hex(-1, 1, 0)),
     SW(Hex(-1, 0, 1)),
     SE(Hex(0, -1, 1));
+
+    fun cw(): Direction =
+        entries[(ordinal + 1) % entries.size]
+
+    fun ccw(): Direction =
+        entries[(ordinal + entries.size - 1) % entries.size]
 }
