@@ -17,9 +17,4 @@ class Grid(
 
     operator fun contains(hex: Hex): Boolean =
         hex in cells
-
-    fun neighbors(hex: Hex): List<Hex> =
-        Direction.entries
-            .map { hex + it.delta }
-            .filter { it in this }
 }

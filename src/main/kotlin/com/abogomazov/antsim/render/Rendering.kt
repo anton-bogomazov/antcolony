@@ -1,4 +1,4 @@
-package com.abogomazov.antsim
+package com.abogomazov.antsim.render
 
 import com.abogomazov.antsim.domain.Direction
 import com.abogomazov.antsim.domain.Grid
@@ -7,7 +7,6 @@ import com.abogomazov.antsim.domain.Walker
 import kotlin.math.sqrt
 
 data class Point(val x: Double, val y: Double)
-
 
 data class RenderShape(
     val points: List<Point>
