@@ -1,8 +1,17 @@
-package com.abogomazov.antsim.domain.hex
+package com.abogomazov.antsim.domain.grid
 
 class Grid(
     private val radius: UInt,
 ) {
+    companion object {
+        val MAX_SIZE = 100u
+    }
+
+    init {
+        require(radius <= MAX_SIZE) { "Grid radius is too large; max size is $MAX_SIZE" }
+        require(radius != 0u) { "Radius should be positive number; given zero" }
+    }
+
     val cells: Set<CubeCoordinate> = buildSet {
         val radius = radius.toInt()
         for (x in -radius..radius) {

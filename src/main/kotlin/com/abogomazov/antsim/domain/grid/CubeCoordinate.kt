@@ -1,4 +1,4 @@
-package com.abogomazov.antsim.domain.hex
+package com.abogomazov.antsim.domain.grid
 
 import kotlin.math.absoluteValue
 
@@ -11,6 +11,10 @@ data class CubeCoordinate(
         require(x + y + z == 0) { "Invalid cube coordinate" }
     }
 
+    companion object {
+        val ORIGIN = CubeCoordinate(0, 0, 0)
+    }
+
     operator fun plus(other: CubeVector): CubeCoordinate =
         CubeCoordinate(x + other.dx, y + other.dy, z + other.dz)
 
@@ -18,9 +22,12 @@ data class CubeCoordinate(
         this + other.opposite()
 
     fun distance(other: CubeCoordinate): Int {
-        return ((x - other.x).absoluteValue +
-                (y - other.y).absoluteValue +
-                (z - other.z).absoluteValue) / 2
+        val vector = CubeVector.between(this, other)
+        return maxOf(
+            vector.dx.absoluteValue,
+            vector.dy.absoluteValue,
+            vector.dz.absoluteValue,
+        )
     }
 
     override fun toString(): String = "($x, $y, $z)"

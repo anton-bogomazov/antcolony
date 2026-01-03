@@ -1,4 +1,4 @@
-package com.abogomazov.antsim.domain.hex
+package com.abogomazov.antsim.domain.grid
 
 enum class Direction {
     E,
