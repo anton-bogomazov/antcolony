@@ -1,7 +1,7 @@
 package com.abogomazov.antsim.domain.grid
 
 class Grid(
-    private val radius: UInt,
+    val radius: UInt,
 ) {
     companion object {
         val MAX_SIZE = 100u
