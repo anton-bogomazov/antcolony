@@ -1,20 +1,23 @@
 package com.abogomazov.antsim.app
 
-import com.abogomazov.antsim.domain.Simulation
-import com.abogomazov.antsim.domain.WalkerAnt
+import com.abogomazov.antsim.domain.world.World
 import com.abogomazov.antsim.render.*
 import java.awt.Graphics
 import java.awt.Graphics2D
 import java.awt.RenderingHints
 import javax.swing.JPanel
 import javax.swing.Timer
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
+
+val tickRate: Duration = 500.milliseconds
 
 class SimulatorPanel(
     private val hexSize: Double,
-    private val simulation: Simulation,
+    private val simulation: World,
 ) : JPanel() {
     init {
-        val timer = Timer(simulation.tickRate.inWholeMilliseconds.toInt()) {
+        val timer = Timer(tickRate.inWholeMilliseconds.toInt()) {
             simulation.tick()
             repaint()
         }
@@ -30,9 +33,8 @@ class SimulatorPanel(
                 hexSize = hexSize,
             )
         ) {
-            drawShapes(*simulation.world.render().toTypedArray())
-            drawShapes(*simulation.world.walkers.map { (it as WalkerAnt).render() }.toTypedArray())
-            drawShapes(*simulation.world.objects.map { it.render() }.toTypedArray())
+            drawShapes(*simulation.render().toTypedArray())
+            drawShapes(*simulation.objects.map { it.render() }.toTypedArray())
         }
     }
 }

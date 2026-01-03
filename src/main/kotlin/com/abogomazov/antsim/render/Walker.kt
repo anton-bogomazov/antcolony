@@ -1,8 +1,8 @@
 package com.abogomazov.antsim.render
 
 import com.abogomazov.antsim.app.RenderingContext
-import com.abogomazov.antsim.domain.Walker
-import com.abogomazov.antsim.domain.WalkerAnt
+import com.abogomazov.antsim.domain.world.objects.Walker
+import com.abogomazov.antsim.domain.world.objects.WalkerAnt
 import kotlin.math.cos
 import kotlin.math.sin
 

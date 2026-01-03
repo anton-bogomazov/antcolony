@@ -1,7 +1,7 @@
 package com.abogomazov.antsim.render
 
 import com.abogomazov.antsim.app.RenderingContext
-import com.abogomazov.antsim.domain.Hex
+import com.abogomazov.antsim.domain.hex.CubeCoordinate
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
@@ -13,7 +13,7 @@ private val VERTICAL_SPACING_FACTOR = 3.0 / 2.0
 private val HORIZONTAL_SPACING_FACTOR = sqrt(3.0)
 private val HORIZONTAL_OFFSET_FACTOR = HORIZONTAL_SPACING_FACTOR / 2.0
 
-fun Hex.center(
+fun CubeCoordinate.center(
     hexSize: Double,
     origin: Point
 ): Point {
@@ -28,7 +28,7 @@ fun Hex.center(
 }
 
 context(context: RenderingContext)
-fun Hex.polygon(color: Color): RenderShape {
+fun CubeCoordinate.polygon(color: Color): RenderShape {
     val center = center(context.hexSize, context.origin)
 
     val vertices = (0 until HEX_SIDES).map { i ->

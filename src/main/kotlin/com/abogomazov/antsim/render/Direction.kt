@@ -1,6 +1,6 @@
 package com.abogomazov.antsim.render
 
-import com.abogomazov.antsim.domain.Direction
+import com.abogomazov.antsim.domain.hex.Direction
 
 fun Direction.radian(): Double =
     when (this) {

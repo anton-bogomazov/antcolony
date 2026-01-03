@@ -1,10 +1,11 @@
 package com.abogomazov.antsim.render
 
 import com.abogomazov.antsim.app.RenderingContext
-import com.abogomazov.antsim.domain.Anthill
-import com.abogomazov.antsim.domain.Food
-import com.abogomazov.antsim.domain.WorldObject
-import com.abogomazov.antsim.domain.Obstacle
+import com.abogomazov.antsim.domain.world.objects.Anthill
+import com.abogomazov.antsim.domain.world.objects.Food
+import com.abogomazov.antsim.domain.world.objects.WorldObject
+import com.abogomazov.antsim.domain.world.objects.Obstacle
+import com.abogomazov.antsim.domain.world.objects.Walker
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -16,7 +17,44 @@ fun WorldObject.render(): RenderShape {
         is Anthill -> triangle(center, context.hexSize * 0.6, Color.BROWN)
         is Food -> circle(center, context.hexSize * 0.4, Color.RED)
         is Obstacle -> square(center, context.hexSize * 0.7, Color.BLACK)
+        is Walker -> arrow(center, context.hexSize * WALKER_SIZE, Color.BLACK)
     }
+}
+
+// TODO refactor
+fun Walker.arrow(center: Point, size: Double, color: Color): RenderShape {
+    val arrow = RenderShape(
+        listOf(
+            Point(x = size, y = 0.0),
+            Point(-size * 0.5, y = size * 0.5),
+            Point(-size * 0.5, y = -size * 0.5)
+        ),
+        color = color
+    ).translate(
+        origin = center,
+        angleRad = direction.radian()
+    )
+
+    // если муравей несет еду — добавляем маленький кружок в центре стрелки
+    val foodDot = if (carryingFood) {
+        val dotRadius = size * 0.3
+        val points = (0 until 12).map { i ->
+            val angle = 2 * Math.PI * i / 12
+            Point(
+                center.x + dotRadius * cos(angle),
+                center.y + dotRadius * sin(angle)
+            )
+        }
+        RenderShape(points, color = Color.RED)
+    } else null
+
+    return if (foodDot != null) {
+        // объединяем треугольник и кружок
+        RenderShape(
+            points = arrow.points + foodDot.points,
+            color = arrow.color // основной цвет треугольника
+        )
+    } else arrow
 }
 
 private fun triangle(center: Point, size: Double, color: Color): RenderShape {

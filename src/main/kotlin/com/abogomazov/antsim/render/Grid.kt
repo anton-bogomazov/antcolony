@@ -1,19 +1,20 @@
 package com.abogomazov.antsim.render
 
 import com.abogomazov.antsim.app.RenderingContext
-import com.abogomazov.antsim.domain.Anthill
-import com.abogomazov.antsim.domain.Food
-import com.abogomazov.antsim.domain.Grid
-import com.abogomazov.antsim.domain.Obstacle
-import com.abogomazov.antsim.domain.World
+import com.abogomazov.antsim.domain.world.objects.Anthill
+import com.abogomazov.antsim.domain.world.objects.Food
+import com.abogomazov.antsim.domain.world.objects.Obstacle
+import com.abogomazov.antsim.domain.world.objects.Walker
+import com.abogomazov.antsim.domain.world.World
 
 context(_: RenderingContext)
 fun World.render(): List<RenderShape> =
     grid.cells.map { hex ->
-        val color = when (val obj = getObject(hex)) {
+        val color = when (val obj = objectAt(hex)) {
             is Anthill -> Color.WHITE
             is Food -> Color.WHITE
             is Obstacle -> Color.WHITE
+            is Walker -> Color.WHITE
             null -> {
                 // пустая клетка: проверяем наличие феромона
                 val pheromoneLevel = pheromones[hex] ?: 0.0

@@ -1,10 +1,10 @@
 package com.abogomazov.antsim.app
 
-import com.abogomazov.antsim.domain.Anthill
-import com.abogomazov.antsim.domain.Food
-import com.abogomazov.antsim.domain.Hex
-import com.abogomazov.antsim.domain.Obstacle
-import com.abogomazov.antsim.domain.WorldObject
+import com.abogomazov.antsim.domain.world.objects.Anthill
+import com.abogomazov.antsim.domain.world.objects.Food
+import com.abogomazov.antsim.domain.hex.CubeCoordinate
+import com.abogomazov.antsim.domain.world.objects.Obstacle
+import com.abogomazov.antsim.domain.world.objects.WorldObject
 import kotlin.time.Duration
 
 data class SimulationParameters(
@@ -18,11 +18,11 @@ data class AxialCoordinate(
     val q: Int,
 ) {
     // FIXME should I introduce Cube Coordinate?
-    fun toCube(): Hex {
+    fun toCube(): CubeCoordinate {
         val x = q
         val z = r
         val y = -x - z
-        return Hex(x, y, z)
+        return CubeCoordinate(x, y, z)
     }
 }
 
