@@ -16,5 +16,5 @@ class Food(
         return actualTaken
     }
 
-    override fun toString(): String = "Food($amount)"
+    override fun toString(): String = "Food[$amount] at $hex"
 }

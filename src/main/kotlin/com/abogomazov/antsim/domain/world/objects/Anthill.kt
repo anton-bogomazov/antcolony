@@ -6,5 +6,5 @@ class Anthill(
     position: CubeCoordinate,
     val foodStored: UInt,
 ) : ImmovableWorldObject(position) {
-    override fun toString(): String = "Anthill${hashCode()}($foodStored)"
+    override fun toString(): String = "Anthill[$foodStored] at $hex"
 }
