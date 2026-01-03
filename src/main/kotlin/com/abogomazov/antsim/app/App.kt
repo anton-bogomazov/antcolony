@@ -1,6 +1,11 @@
 package com.abogomazov.antsim.app
 
+import com.abogomazov.antsim.domain.grid.Direction
 import com.abogomazov.antsim.domain.grid.Grid
+import com.abogomazov.antsim.domain.world.objects.Anthill
+import com.abogomazov.antsim.domain.world.objects.Food
+import com.abogomazov.antsim.domain.world.objects.Obstacle
+import com.abogomazov.antsim.domain.world.objects.WalkerAnt
 import com.abogomazov.antsim.render.domain.Point
 import com.abogomazov.antsim.render.render
 import java.awt.Graphics
@@ -17,6 +22,13 @@ fun main() {
         )
 
     val grid = Grid(parameters.gridRadius.toUInt())
+    val objects = listOf(
+        Anthill(grid.cells.toList()[0], 0u),
+        Obstacle(grid.cells.toList()[1]),
+        WalkerAnt(grid.cells.toList()[2], Direction.NW),
+        WalkerAnt(grid.cells.toList()[3], Direction.SE).apply { carryingFood = true },
+        Food(grid.cells.toList()[4], 15u),
+    )
 
     SwingUtilities.invokeLater {
         val frame = JFrame("Hex Grid")
@@ -35,6 +47,7 @@ fun main() {
                         )
                     ) {
                         drawShapes(*grid.render().toTypedArray())
+                        drawShapes(*objects.render().toTypedArray())
                     }
                 }
             }

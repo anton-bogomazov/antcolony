@@ -6,4 +6,7 @@ data class RenderShape(
 ) {
     fun rotatedAround(origin: Point, angleRad: Double): RenderShape =
         copy(points = points.map { origin + it.rotated(angleRad) })
+
+    operator fun plus(renderShape: RenderShape): RenderShape =
+        copy(points = points + renderShape.points)
 }
