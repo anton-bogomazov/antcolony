@@ -1,6 +1,5 @@
 package com.abogomazov.antsim.app
 
-import com.abogomazov.antsim.app.config.parser.Config
 import com.abogomazov.antsim.app.config.Parameters
 import com.abogomazov.antsim.domain.grid.Grid
 import com.abogomazov.antsim.domain.world.ObjectRegistry
@@ -38,7 +37,7 @@ class AntsimApp(
 
     fun run() =
         SwingUtilities.invokeLater {
-            val frame = JFrame("Hex Grid")
+            val frame = JFrame("Antsim")
             frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
             frame.setSize(parameters.frameSize.width, parameters.frameSize.height)
 
@@ -70,10 +69,4 @@ class AntsimApp(
 
             frame.isVisible = true
         }
-}
-
-fun main() {
-    val config = object {}.javaClass.getResourceAsStream("/small-world.txt")!!
-    val parameters = Config.parse(config)
-    AntsimApp(parameters).run()
 }

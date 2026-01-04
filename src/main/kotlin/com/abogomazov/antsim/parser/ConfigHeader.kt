@@ -1,4 +1,4 @@
-package com.abogomazov.antsim.app.config.parser
+package com.abogomazov.antsim.parser
 
 data class ConfigHeader(
     val radius: Int,

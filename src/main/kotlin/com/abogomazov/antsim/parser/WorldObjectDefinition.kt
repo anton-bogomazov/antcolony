@@ -1,4 +1,4 @@
-package com.abogomazov.antsim.app.config.parser
+package com.abogomazov.antsim.parser
 
 import com.abogomazov.antsim.domain.grid.Direction
 import com.abogomazov.antsim.domain.world.objects.Anthill

@@ -1,6 +1,8 @@
-package com.abogomazov.antsim.app.config.parser
+package com.abogomazov.antsim.parser
 
+import com.abogomazov.antsim.app.config.FrameSize
 import com.abogomazov.antsim.app.config.Parameters
+import com.abogomazov.antsim.app.config.WorldParameters
 import java.io.InputStream
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -28,12 +30,12 @@ class Config(
     fun toParameters() =
         Parameters(
             gridRadius = header.radius.toUInt(),
-            frameSize = _root_ide_package_.com.abogomazov.antsim.app.config.FrameSize(
+            frameSize = FrameSize(
                 header.frameSize.first,
                 header.frameSize.second
             ),
             tickRate = header.tickRate.milliseconds,
-            world = _root_ide_package_.com.abogomazov.antsim.app.config.WorldParameters(
+            world = WorldParameters(
                 initialObjects = defs.map { it.toDomain() }.toSet(),
                 spawnChanceModifier = header.spawnRate,
                 evaporationRate = header.evaporationRate,
