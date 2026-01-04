@@ -2,9 +2,11 @@ package com.abogomazov.antsim.app
 
 import com.abogomazov.antsim.domain.grid.Direction
 import com.abogomazov.antsim.domain.grid.Grid
+import com.abogomazov.antsim.domain.world.ObjectRegistry
+import com.abogomazov.antsim.domain.world.World
+import com.abogomazov.antsim.domain.world.WorldSlicer
 import com.abogomazov.antsim.domain.world.objects.Anthill
 import com.abogomazov.antsim.domain.world.objects.Food
-import com.abogomazov.antsim.domain.world.objects.Obstacle
 import com.abogomazov.antsim.domain.world.objects.WalkerAnt
 import com.abogomazov.antsim.render.domain.Point
 import com.abogomazov.antsim.render.render
@@ -13,22 +15,30 @@ import java.awt.Graphics2D
 import javax.swing.JFrame
 import javax.swing.JPanel
 import javax.swing.SwingUtilities
+import javax.swing.Timer
+import kotlin.time.Duration.Companion.milliseconds
 
 fun main() {
     val parameters =
         Parameters(
-            gridRadius = 2,
+            gridRadius = 1,
             frameSize = FrameSize(600, 600),
+            tickRate = 500.milliseconds,
+            world = WorldParameters(),
         )
 
     val grid = Grid(parameters.gridRadius.toUInt())
     val objects = listOf(
         Anthill(grid.cells.toList()[0], 0u),
-        Obstacle(grid.cells.toList()[1]),
-        WalkerAnt(grid.cells.toList()[2], Direction.NW),
-        WalkerAnt(grid.cells.toList()[3], Direction.SE).apply { carryingFood = true },
-        Food(grid.cells.toList()[4], 15u),
+        WalkerAnt(grid.cells.toList()[6], Direction.NW),
+        Food(grid.cells.toList()[4], 2u),
     )
+    val registry = ObjectRegistry(
+        grid = grid,
+        objects = objects.toSet(),
+    )
+    val slicer = WorldSlicer(grid, registry)
+    val world = World(registry, slicer, parameters.world)
 
     SwingUtilities.invokeLater {
         val frame = JFrame("Hex Grid")
@@ -37,6 +47,14 @@ fun main() {
 
         frame.add(
             object : JPanel() {
+                init {
+                    val timer = Timer(parameters.tickRate.inWholeMilliseconds.toInt()) {
+                        world.tick()
+                        repaint()
+                    }
+                    timer.start()
+                }
+
                 override fun paintComponent(g: Graphics) {
                     super.paintComponent(g)
                     with(
@@ -47,7 +65,7 @@ fun main() {
                         )
                     ) {
                         drawShapes(*grid.render().toTypedArray())
-                        drawShapes(*objects.render().toTypedArray())
+                        drawShapes(*registry.objects().render().toTypedArray())
                     }
                 }
             }
