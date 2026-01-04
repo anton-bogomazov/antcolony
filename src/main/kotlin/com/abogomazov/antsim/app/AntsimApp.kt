@@ -60,7 +60,7 @@ class AntsimApp(
                                 parameters.hexRenderRadius,
                             )
                         ) {
-                            drawShapes(*grid.render().toTypedArray())
+                            drawShapes(*grid.render(registry).toTypedArray())
                             drawShapes(*registry.objects().render().toTypedArray())
                         }
                     }

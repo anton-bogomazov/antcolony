@@ -10,7 +10,9 @@ context(context: RenderingContext)
 fun WorldObject.render(): List<RenderShape> {
     val center = hex.center(context.hexRadius, context.origin)
 
+    // TODO render numbers of food on anthill and food
     return when (this) {
+        is Pheromone -> emptyList()
         is Anthill -> listOf(triangle(context.anthillSize, Color.BROWN).rotatedAround(center, 0.0))
         is Food -> listOf(circle(context.foodSize, Color.RED).rotatedAround(center, 0.0))
         is Obstacle -> listOf(square(context.obstacleSize, Color.BLACK).rotatedAround(center, 0.0))

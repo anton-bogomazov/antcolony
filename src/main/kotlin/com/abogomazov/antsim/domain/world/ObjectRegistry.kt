@@ -2,6 +2,7 @@ package com.abogomazov.antsim.domain.world
 
 import com.abogomazov.antsim.domain.grid.CubeCoordinate
 import com.abogomazov.antsim.domain.grid.Grid
+import com.abogomazov.antsim.domain.world.objects.ImmovableWorldObject
 import com.abogomazov.antsim.domain.world.objects.WorldObject
 
 class ObjectRegistry (
@@ -34,6 +35,7 @@ class ObjectRegistry (
     }
 
     fun move(obj: WorldObject, to: CubeCoordinate) {
+        require(obj !is ImmovableWorldObject) { "Can't move ImmovableWorldObject" }
         require(to in grid.cells)
         require(obj.hex in grid.cells)
         val objs = requireNotNull(objectMap[obj.hex])

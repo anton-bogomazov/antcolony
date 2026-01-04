@@ -3,6 +3,9 @@ package com.abogomazov.antsim.domain.world
 import com.abogomazov.antsim.app.config.WorldParameters
 import com.abogomazov.antsim.domain.grid.*
 import com.abogomazov.antsim.domain.world.objects.*
+import kotlin.collections.set
+
+const val PHEROMONE_PERCEPTION_THRESHOLD = 0.1
 
 class World(
     private val registry: ObjectRegistry,
@@ -29,6 +32,8 @@ class World(
     }
 
     fun tick() {
+        evaporatePheromones(params.evaporationRate)
+
         val walkers = registry.objects().filterIsInstance<Walker>()
 
         for (walker in walkers) {
@@ -46,11 +51,11 @@ class World(
             Action.PickFood -> pickFood(walker)
             Action.DropFood -> dropFood(walker)
             is Action.Move -> moveWalker(walker, action.direction)
-            else -> {}
+            is Action.DepositPheromone -> depositPheromone(walker, action.amount)
         }
     }
 
-    fun moveWalker(walker: Walker, to: Direction) {
+    private fun moveWalker(walker: Walker, to: Direction) {
         val targetHex = walker.hex + to.toVector()
         val objects = registry.objectsAt(targetHex)
         if (objects.any { it is Walker || it is Obstacle }) {
@@ -62,7 +67,7 @@ class World(
         walker.orientation = to
     }
 
-    fun pickFood(walker: Walker) {
+    private fun pickFood(walker: Walker) {
         val foods = registry.objectsAt(walker.hex).filterIsInstance<Food>()
         check(foods.size == 1) { "A single food is expected at ${walker.hex}"}
         val food = foods.single()
@@ -78,7 +83,7 @@ class World(
         }
     }
 
-    fun dropFood(walker: Walker) {
+    private fun dropFood(walker: Walker) {
         if (!walker.carryingFood) {
             error("$walker is not carrying food, but tried to drop it!")
         }
@@ -91,5 +96,24 @@ class World(
         anthill.store(1u)
         println("$walker dropped food at $anthill")
     }
-}
 
+    private fun depositPheromone(walker: Walker, amount: Double) {
+        val pheromoneTrail = registry.objectsAt(walker.hex).filterIsInstance<Pheromone>()
+        val pheromone = pheromoneTrail.firstOrNull()
+        if (pheromone == null) {
+            registry.add(Pheromone(walker.hex, amount))
+        } else {
+            pheromone.deposit(amount)
+        }
+    }
+
+    private fun evaporatePheromones(rate: Double) {
+        registry.objects().filterIsInstance<Pheromone>()
+            .forEach {
+                it.evaporate(rate)
+                if (it.amount < PHEROMONE_PERCEPTION_THRESHOLD) {
+                    registry.clear(it)
+                }
+            }
+    }
+}

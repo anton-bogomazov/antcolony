@@ -5,7 +5,7 @@
 # tick rate, ms
 300
 # spawn and evaporation rates
-0, 0.05
+0, 0.1
 
 anthill, 0, 0, 0
 ant, 1, 0, nw

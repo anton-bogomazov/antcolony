@@ -25,7 +25,7 @@ class WorldSlicer(
                         relDirection = relativeDirection,
                         obstacle = objs.hasObstacle(),
                         food = objs.foodAmount(),
-                        pheromone = 0.0, // TODO add pheromones
+                        pheromone = objs.pheromoneAmount(),
                         anthill = objs.hasAnthill(),
                         occupied = objs.isOccupied(),
                         homeSignal = computeHomeSignal(hex)
@@ -45,6 +45,10 @@ class WorldSlicer(
     private fun List<WorldObject>.foodAmount() =
         filterIsInstance<Food>()
             .fold(0u) { acc, food -> acc + food.amount }
+
+    private fun List<WorldObject>.pheromoneAmount() =
+        filterIsInstance<Pheromone>()
+            .fold(0.0) { acc, pheromone -> acc + pheromone.amount }
 
     private fun computeHomeSignal(hex: CubeCoordinate): Double {
         val anthills = registry.objects().filterIsInstance<Anthill>()
