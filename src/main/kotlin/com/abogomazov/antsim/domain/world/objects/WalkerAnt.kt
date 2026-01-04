@@ -44,7 +44,7 @@ class WalkerAnt(
                     Action.PickFood,
                 )
             } else {
-                val next = neighbors.maxBy { it.pheromone }
+                val next = neighbors.shuffled().maxBy { it.pheromone }
                 listOf(
                     Action.Move(next.relDirection),
                 )
