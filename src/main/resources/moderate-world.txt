@@ -2,6 +2,10 @@
 8
 # tick rate, ms
 300
+# frame size
+600, 600
+# spawn and evaporation rates
+0, 0.05
 
 anthill, 0, 0
 anthill, 3, -5

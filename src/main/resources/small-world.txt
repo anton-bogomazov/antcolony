@@ -1,0 +1,16 @@
+# world radius
+2
+# frame size
+600, 600
+# tick rate, ms
+300
+# spawn and evaporation rates
+0, 0.05
+
+anthill, 0, 0, 0
+ant, 1, 0, nw
+
+food, -2, 2, 10
+
+obstacle, -1, 2
+obstacle, 2, -1

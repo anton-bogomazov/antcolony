@@ -1,4 +1,4 @@
-package com.abogomazov.antsim.app
+package com.abogomazov.antsim.app.config
 
 data class FrameSize(
     val width: Int,

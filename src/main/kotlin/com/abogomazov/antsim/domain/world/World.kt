@@ -1,6 +1,6 @@
 package com.abogomazov.antsim.domain.world
 
-import com.abogomazov.antsim.app.WorldParameters
+import com.abogomazov.antsim.app.config.WorldParameters
 import com.abogomazov.antsim.domain.grid.*
 import com.abogomazov.antsim.domain.world.objects.*
 
