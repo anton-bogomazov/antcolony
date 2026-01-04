@@ -18,12 +18,14 @@ data class CubeVector(
                 to.y - from.y,
                 to.z - from.z
             )
+
+        val ZERO = CubeVector(0, 0, 0)
     }
 
     fun opposite(): CubeVector =
         CubeVector(-dx, -dy, -dz)
 
-    fun isZero() = dx == 0 && dy == 0 && dz == 0
+    fun isZero() = this == ZERO
 
     fun normalizedOrNull(): CubeVector? {
         if (isZero()) return null
