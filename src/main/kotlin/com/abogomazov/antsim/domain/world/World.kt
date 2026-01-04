@@ -1,11 +1,13 @@
 package com.abogomazov.antsim.domain.world
 
 import com.abogomazov.antsim.app.config.WorldParameters
-import com.abogomazov.antsim.domain.grid.*
+import com.abogomazov.antsim.domain.grid.Direction
+import com.abogomazov.antsim.domain.grid.toVector
 import com.abogomazov.antsim.domain.world.objects.*
-import kotlin.collections.set
+import kotlin.random.Random
 
 const val PHEROMONE_PERCEPTION_THRESHOLD = 0.1
+const val FOOD_FOR_MAX_CHANCE = 20.0
 
 class World(
     private val registry: ObjectRegistry,
@@ -33,6 +35,7 @@ class World(
 
     fun tick() {
         evaporatePheromones(params.evaporationRate)
+        maybeSpawnWalker(params.spawnChanceModifier)
 
         val walkers = registry.objects().filterIsInstance<Walker>()
 
@@ -115,5 +118,21 @@ class World(
                     registry.clear(it)
                 }
             }
+    }
+
+    private fun maybeSpawnWalker(chance: Double) {
+        val mostSuccessfulAnthill =
+            registry.objects().filterIsInstance<Anthill>()
+                .maxByOrNull { it.foodStored }
+                ?: return
+
+        val foodStored = mostSuccessfulAnthill.foodStored.toDouble()
+        val n = Random.nextDouble()
+        val foodFactor = (foodStored / FOOD_FOR_MAX_CHANCE).coerceIn(0.0, 1.0)
+        val spawnChance = chance * foodFactor
+
+        if (n < spawnChance) {
+            registry.add(WalkerAnt.spawnAt(mostSuccessfulAnthill))
+        }
     }
 }

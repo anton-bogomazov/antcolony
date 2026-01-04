@@ -5,12 +5,13 @@
 # tick rate, ms
 300
 # spawn and evaporation rates
-0, 0.1
+0.05, 0.1
 
 anthill, 0, 0, 0
 ant, 1, 0, nw
 
-food, -2, 2, 10
+food, -2, 2, 20
+food, 2, -2, 100
 
 obstacle, -1, 2
 obstacle, 2, -1

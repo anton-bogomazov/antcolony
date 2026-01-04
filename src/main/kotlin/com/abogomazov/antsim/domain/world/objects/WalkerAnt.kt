@@ -2,7 +2,9 @@ package com.abogomazov.antsim.domain.world.objects
 
 import com.abogomazov.antsim.domain.grid.Direction
 import com.abogomazov.antsim.domain.grid.CubeCoordinate
+import com.abogomazov.antsim.domain.world.view.CellSense
 import com.abogomazov.antsim.domain.world.view.LocalView
+import kotlin.random.Random
 
 class WalkerAnt(
     hex: CubeCoordinate,
@@ -44,7 +46,18 @@ class WalkerAnt(
                     Action.PickFood,
                 )
             } else {
-                val next = neighbors.shuffled().maxBy { it.pheromone }
+                val cellsWithPheromones =
+                    neighbors.filter { it.pheromone > 0.0 }
+                var next = cellsWithPheromones.maxWithOrNull(
+                    compareByDescending<CellSense> { it.pheromone }
+                        .thenBy { it.homeSignal }
+                ) ?: neighbors.random()
+
+                // explore randomly
+                if (Random.nextInt(0,10) > 8) {
+                    next = neighbors.random()
+                }
+
                 listOf(
                     Action.Move(next.relDirection),
                 )

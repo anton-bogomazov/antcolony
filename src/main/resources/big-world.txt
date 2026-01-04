@@ -1,11 +1,11 @@
 # world radius
 15
 # frame size
-600, 600
+1000, 1000
 # tick rate, ms
-300
+100
 # spawn and evaporation rates
-0, 0.05
+0.025, 0.05
 
 # objects
 anthill, -12, 8, 0
@@ -14,18 +14,16 @@ anthill, 0, 0, 0
 anthill, 15, -5, 0
 anthill, -7, 14, 0
 
+ant, 1, 0, nw
+
 food, 8, -4, 12
 food, -10, 6, 8
 food, 2, -12, 15
-food, -5, 10, 10
 food, 12, -8, 14
 food, -3, 7, 9
-food, 6, -6, 13
 food, -8, 5, 11
 food, 13, -1, 10
-food, -12, 2, 8
 food, 11, 4, 12
-food, -10, 5, 9
 food, 14, -3, 15
 
 obstacle, -1, 0
