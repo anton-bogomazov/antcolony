@@ -22,6 +22,33 @@ class WalkerAnt(
         val neighbors = view.neighbors().filterNot { it.obstacle || it.occupied }
         if (neighbors.isEmpty()) return listOf(Action.Idle)
 
-        return listOf(Action.Move(neighbors.random().relDirection))
+        return if (carryingFood) {
+            val next = neighbors.maxBy { it.homeSignal }
+            if (next.anthill) {
+                listOf(
+                    Action.DepositPheromone(amount = 1.0),
+                    Action.Move(next.relDirection),
+                    Action.DropFood,
+                )
+            } else {
+                listOf(
+                    Action.DepositPheromone(amount = 1.0),
+                    Action.Move(next.relDirection),
+                )
+            }
+        } else {
+            val foodCell = neighbors.firstOrNull { it.food > 0u }
+            if (foodCell != null) {
+                listOf(
+                    Action.Move(foodCell.relDirection),
+                    Action.PickFood,
+                )
+            } else {
+                val next = neighbors.maxBy { it.pheromone }
+                listOf(
+                    Action.Move(next.relDirection),
+                )
+            }
+        }
     }
 }
