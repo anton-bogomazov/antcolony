@@ -2,10 +2,15 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "2.2.21"
+    application
 }
 
-group = "com.abogomazov"
+group = "com.abogomazov.antsim"
 version = "1.0-SNAPSHOT"
+
+application {
+    mainClass.set("com.abogomazov.antsim.MainKt")
+}
 
 repositories {
     mavenCentral()
